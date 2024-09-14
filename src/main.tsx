@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import { MantineProvider } from "@mantine/core";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +12,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MantineProvider
       withGlobalStyles
       withNormalizeCSS
-      theme={{ loader: "bars" }}
+      //theme={{ loader: "bars" }}
+      theme={{
+        colors: {
+          brand: [
+            "#5500DB", // Primary color (purple)
+          ],
+        },
+        mainColor: "brand", // Set primary color to 'brand'
+        loader: "bars", // Optional: keep other theme settings
+      }}
     >
       <App />
     </MantineProvider>
@@ -29,4 +38,3 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     />
   </React.StrictMode>
 );
-

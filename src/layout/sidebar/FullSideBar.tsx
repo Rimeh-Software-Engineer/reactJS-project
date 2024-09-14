@@ -7,17 +7,7 @@ import {
   rem,
   Avatar,
 } from "@mantine/core";
-import {
-  IconNotes,
-  IconCalendarStats,
-  IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconHome2,
-  IconCategory2,
-} from "@tabler/icons-react";
+import { IconHome2, IconCategory2 } from "@tabler/icons-react";
 import { LinksGroup } from "./NavbarLinksGroup";
 
 const mockdata = [

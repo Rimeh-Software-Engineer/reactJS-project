@@ -1,4 +1,4 @@
-import { AppShell, MediaQuery, useMantineTheme } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { Navigate, Outlet } from "react-router-dom";
 import { AppHeader } from "./header/AppHeader";
 import { AppSideBar } from "./sidebar/AppSideBar";
@@ -6,7 +6,6 @@ import { useDisclosure } from "@mantine/hooks";
 
 export default function AdminLayout() {
   const [opened, { toggle }] = useDisclosure(false);
-  const auth = true;
   return (
     <AppShell
       styles={{
@@ -42,7 +41,7 @@ export default function AdminLayout() {
         />
       }
     >
-      {auth ? <Outlet /> : <Navigate to="/login" replace />}
+      <Outlet />
     </AppShell>
   );
 }

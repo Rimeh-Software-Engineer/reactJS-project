@@ -1,32 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Navbar, createStyles, getStylesRef, rem } from "@mantine/core";
 import {
-  Navbar,
-  SegmentedControl,
-  Text,
-  createStyles,
-  getStylesRef,
-  rem,
-} from "@mantine/core";
-import {
-  IconShoppingCart,
+  IconGiftCard,
   IconLicense,
   IconMessage2,
-  IconBellRinging,
-  IconMessages,
-  IconFingerprint,
-  IconKey,
-  IconSettings,
-  Icon2fa,
   IconUsers,
-  IconFileAnalytics,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconReceiptRefund,
-  IconLogout,
-  IconSwitchHorizontal,
   IconUser,
+  IconShoppingCart,
+  IconCategory,
+  IconTrophy,
 } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IconCategory2 } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -77,15 +62,11 @@ const useStyles = createStyles((theme) => ({
 
   linkActive: {
     "&, &:hover": {
-      backgroundColor: theme.fn.variant({
-        variant: "light",
-        color: theme.primaryColor,
-      }).background,
-      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-        .color,
+      backgroundColor: theme.colors.brand[0],
+      color: theme.white, // or another color based on your preference
+
       [`& .${getStylesRef("icon")}`]: {
-        color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-          .color,
+        color: theme.white, // or another color based on your preference
       },
     },
   },
@@ -99,48 +80,43 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const tabs = {
-  // account: [
-  //   { link: "", label: "Notifications", icon: IconBellRinging },
-  //   { link: "", label: "Billing", icon: IconReceipt2 },
-  //   { link: "", label: "Security", icon: IconFingerprint },
-  //   { link: "", label: "SSH Keys", icon: IconKey },
-  //   { link: "", label: "Databases", icon: IconDatabaseImport },
-  //   { link: "", label: "Authentication", icon: Icon2fa },
-  //   { link: "", label: "Other Settings", icon: IconSettings },
-  // ],
   general: [
-    { link: "/services", label: "Services", icon: IconLicense },
+    { link: "/dashboard", label: "Dashboard", icon: IconLicense },
+    { link: "/users", label: "Users", icon: IconUsers },
+    { link: "/feedbacks", label: "Comments", icon: IconMessage2 },
+    { link: "/offers", label: "Offers", icon: IconGiftCard },
+    { link: "/products", label: "Products", icon: IconShoppingCart },
+    { link: "/categories", label: "Categories", icon: IconCategory2 },
     {
-      link: "/service-providers",
-      label: "Service Providers",
-      icon: IconShoppingCart,
+      link: "/recommendations",
+      label: "Recommendations",
+      icon: IconTrophy,
     },
-    // { link: "", label: "Orders", icon: IconShoppingCart },
-    // { link: "", label: "Receipts", icon: IconLicense },
-    // { link: "", label: "Reviews", icon: IconMessage2 },
-    // { link: "", label: "Messages", icon: IconMessages },
-    // { link: "", label: "Customers", icon: IconUsers },
-    // { link: "", label: "Refunds", icon: IconReceiptRefund },
-    // { link: "", label: "Files", icon: IconFileAnalytics },
   ],
 };
 
 export function AppSideBar() {
   const { classes, cx } = useStyles();
   const navigate = useNavigate();
-  const [section, setSection] = useState<"account" | "general">("account");
-  const [active, setActive] = useState("Services");
+  const [section, setSection] = useState<"account" | "general">("general");
+  const [active, setActive] = useState("");
+  const { pathname } = useLocation();
+  console.log(pathname);
+
+  useEffect(() => {
+    setActive(pathname);
+  }, [pathname]);
 
   const links = tabs["general"].map((item) => (
     <a
       className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
+        [classes.linkActive]: item.link === active,
       })}
       href={item.link}
       key={item.label}
       onClick={(event) => {
         event.preventDefault();
-        setActive(item.label);
+        setActive(item.link);
         navigate(item.link);
       }}
     >
@@ -148,7 +124,7 @@ export function AppSideBar() {
       <span>{item.label}</span>
     </a>
   ));
-
+  console.log(tabs["general"]);
   return (
     <Navbar
       height={"100vh"}
@@ -156,29 +132,6 @@ export function AppSideBar() {
       p="md"
       className={classes.navbar}
     >
-      <Navbar.Section>
-        {/* <Text
-          weight={500}
-          size="sm"
-          className={classes.title}
-          color="dimmed"
-          mb="xs"
-        >
-          bgluesticker@mantine.dev
-        </Text> */}
-
-        {/* <SegmentedControl
-          value={section}
-          onChange={(value: "account" | "general") => setSection(value)}
-          transitionTimingFunction="ease"
-          fullWidth
-          data={[
-            { label: "Account", value: "account" },
-            { label: "System", value: "general" },
-          ]}
-        /> */}
-      </Navbar.Section>
-
       <Navbar.Section>{links}</Navbar.Section>
 
       <Navbar.Section mt="xl" className={classes.footer}>
@@ -190,15 +143,6 @@ export function AppSideBar() {
           <IconUser className={classes.linkIcon} stroke={1.5} />
           <span>Account</span>
         </a>
-
-        {/* <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a> */}
       </Navbar.Section>
     </Navbar>
   );
